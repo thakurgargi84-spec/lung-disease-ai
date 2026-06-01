@@ -484,13 +484,10 @@ if uploaded_file is not None:
 
             st.subheader("📈 ROC Curve")
 
-            if os.path.exists("results/graph/roc_curve.png"):
-                st.image(
-                    "results/graph/roc_curve.png",
-                    use_container_width=True
-                )
-            else:
-                st.info("ROC Curve unavailable on deployment.")
+            st.image(
+                "assets/roc_curve.png",
+                use_container_width=True
+            )
 
             # =========================
             # CONFUSION MATRIX
@@ -498,14 +495,10 @@ if uploaded_file is not None:
             st.markdown("---")
             st.subheader("📊 Confusion Matrix")
 
-            if os.path.exists("results/graph/confusion_matrix.png"):
-                st.image(
-                    "results/graph/confusion_matrix.png",
-                    use_container_width=True
-                )
-            else:
-                st.info("Confusion Matrix unavailable on deployment.")
-                st.markdown("---")
+            st.image(
+                "assets/confusion_matrix.png",
+                use_container_width=True
+            )
 
 st.subheader("ℹ️ About This Project")
 
