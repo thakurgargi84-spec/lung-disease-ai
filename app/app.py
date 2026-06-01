@@ -1,5 +1,6 @@
 import sys
 import os
+import download_models
 
 sys.path.append(
     os.path.abspath(
