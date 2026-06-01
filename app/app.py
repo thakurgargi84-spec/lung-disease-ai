@@ -504,7 +504,8 @@ if uploaded_file is not None:
                     use_container_width=True
                 )
             else:
-                st.info("Confusion Matrix unavailable on deployment.")st.markdown("---")
+                st.info("Confusion Matrix unavailable on deployment.")
+                st.markdown("---")
 
 st.subheader("ℹ️ About This Project")
 
