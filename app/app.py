@@ -344,8 +344,12 @@ if uploaded_file is not None:
                 st.warning(
                     "⚠️ Low confidence prediction. Additional medical review recommended."
                 )
-            pdf_file = os.path.join("results", "report.pdf")
+            os.makedirs("results", exist_ok=True)
 
+            pdf_file = os.path.join(
+                "results",
+                "report.pdf"
+            )            
             create_pdf_report(
                 pdf_file,
                 disease,
