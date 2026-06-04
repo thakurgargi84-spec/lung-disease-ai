@@ -463,6 +463,98 @@ if uploaded_file is not None:
                 No significant lung abnormalities detected.
                 Continue regular health checkups.
                 """)
+            # =========================
+            # BLOOD REPORT INDICATORS
+            # =========================
+
+            st.markdown("---")
+
+            st.subheader("🩸 Typical Blood Report Indicators")
+
+            if disease == "COVID":
+
+                st.table({
+                    "Parameter": [
+                        "CRP",
+                        "D-Dimer",
+                        "Lymphocyte Count"
+                    ],
+                    "Typical Finding": [
+                        "↑ Elevated",
+                        "↑ Elevated",
+                        "↓ Reduced"
+                    ]
+                })
+
+                st.info(
+                    "These laboratory findings are commonly associated with COVID-19."
+                )
+
+            elif disease == "PNEUMONIA":
+
+                st.table({
+                    "Parameter": [
+                        "WBC Count",
+                        "CRP",
+                        "ESR",
+                        "Hemoglobin"
+                    ],
+                    "Typical Finding": [
+                        "↑ Elevated",
+                        "↑ Elevated",
+                        "↑ Elevated",
+                        "Normal / Slightly Low"
+                    ]
+                })
+
+                st.info(
+                    "These findings may indicate an active respiratory infection."
+                )
+
+            elif disease == "TB":
+
+                st.table({
+                    "Parameter": [
+                        "ESR",
+                        "CRP",
+                        "Hemoglobin",
+                        "WBC Count"
+                    ],
+                    "Typical Finding": [
+                        "↑ High",
+                        "↑ Elevated",
+                        "↓ Mildly Reduced",
+                        "Normal / Mildly Elevated"
+                    ]
+                })
+
+                st.info(
+                    "These findings are commonly observed in tuberculosis patients."
+                )
+
+            else:
+
+                st.table({
+                    "Parameter": [
+                        "WBC Count",
+                        "CRP",
+                        "ESR",
+                        "Hemoglobin"
+                    ],
+                    "Typical Finding": [
+                        "Normal",
+                        "Normal",
+                        "Normal",
+                        "Normal"
+                    ]
+                })
+
+                st.success(
+                    "Blood parameters are typically within normal limits."
+                ) 
+                st.caption(
+                    "Reference clinical indicators associated with the predicted disease. Not a patient-specific blood test."
+                )   
             # =========================       
             # MODEL PERFORMANCE
             # =========================
