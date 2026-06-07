@@ -320,6 +320,57 @@ if uploaded_file is not None:
             )
 
             # =========================
+            # AI FOCUS REGION LABEL
+            # =========================
+
+            heatmap_gray = cv2.cvtColor(
+                heatmap,
+                cv2.COLOR_BGR2GRAY
+            )
+
+            _, thresh = cv2.threshold(
+                heatmap_gray,
+                180,
+                255,
+                cv2.THRESH_BINARY
+            )
+
+            contours, _ = cv2.findContours(
+                thresh,
+                cv2.RETR_EXTERNAL,
+                cv2.CHAIN_APPROX_SIMPLE
+            )
+
+            if len(contours) > 0:
+
+                largest = max(
+                    contours,
+                    key=cv2.contourArea
+                )
+
+                x, y, w, h = cv2.boundingRect(
+                    largest
+                )
+
+                cv2.rectangle(
+                    overlay,
+                    (x, y),
+                    (x + w, y + h),
+                    (0, 255, 0),
+                    3
+                )
+
+                cv2.putText(
+                    overlay,
+                    "Possible Infection Area",
+                    (x, max(y - 10, 20)),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.5,
+                    (0, 255, 0),
+                    2
+                )
+
+            # =========================
             # RESULTS
             # =========================
 
