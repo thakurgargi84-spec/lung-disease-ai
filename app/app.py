@@ -150,7 +150,27 @@ st.markdown(
     Upload a chest X-ray image to begin analysis.
     """
 )
+# =========================
+# PATIENT DETAILS
+# =========================
 
+st.subheader("👤 Patient Information")
+
+patient_name = st.text_input(
+    "Patient Name"
+)
+
+patient_age = st.number_input(
+    "Age",
+    min_value=1,
+    max_value=120,
+    value=30
+)
+
+patient_gender = st.selectbox(
+    "Gender",
+    ["Male", "Female", "Other"]
+)
 
 
 # =========================
@@ -240,7 +260,6 @@ if uploaded_file is not None:
                 mask,
                 (512, 512)
             )
-
             # Show segmented lungs
             st.markdown("---")
 
@@ -262,7 +281,6 @@ if uploaded_file is not None:
                 image_resized,
                 verbose=0
             )
-
             predicted_class = np.argmax(
                 prediction
             )
@@ -284,7 +302,6 @@ if uploaded_file is not None:
                 model,
                 "conv2d_2"
             )
-
             heatmap = cv2.resize(
                 heatmap,
                 (IMG_SIZE, IMG_SIZE)
@@ -318,57 +335,36 @@ if uploaded_file is not None:
                 0.4,
                 0
             )
-
-            # =========================
-            # AI FOCUS REGION LABEL
-            # =========================
-
-            heatmap_gray = cv2.cvtColor(
-                heatmap,
-                cv2.COLOR_BGR2GRAY
+            # Black background box
+            cv2.rectangle(
+                overlay,
+                (5, 5),
+                (220, 40),
+                (0, 0, 0),
+                -1
             )
 
-            _, thresh = cv2.threshold(
-                heatmap_gray,
-                180,
-                255,
-                cv2.THRESH_BINARY
+            # White border
+            cv2.rectangle(
+                overlay,
+                (5, 5),
+                (220, 40),
+                (255, 255, 255),
+                1
             )
 
-            contours, _ = cv2.findContours(
-                thresh,
-                cv2.RETR_EXTERNAL,
-                cv2.CHAIN_APPROX_SIMPLE
+            # Text
+            cv2.putText(
+                overlay,
+                "AI Attention Region",
+                (15, 28),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.55,
+                (255, 255, 255),
+                2
             )
-
-            if len(contours) > 0:
-
-                largest = max(
-                    contours,
-                    key=cv2.contourArea
-                )
-
-                x, y, w, h = cv2.boundingRect(
-                    largest
-                )
-
-                cv2.rectangle(
-                    overlay,
-                    (x, y),
-                    (x + w, y + h),
-                    (0, 255, 0),
-                    3
-                )
-
-                cv2.putText(
-                    overlay,
-                    "Possible Infection Area",
-                    (x, max(y - 10, 20)),
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    0.5,
-                    (0, 255, 0),
-                    2
-                )
+                        
+                    
 
             # =========================
             # RESULTS
@@ -390,6 +386,20 @@ if uploaded_file is not None:
                     f"{confidence:.2f}%"
                 )
 
+            # =========================
+            # PATIENT DETAILS
+            # =========================
+
+            st.info(
+                f"""
+                👤 Patient Name: {patient_name}
+
+                🎂 Age: {patient_age}
+
+                🚻 Gender: {patient_gender}
+                """
+            )
+
             if confidence < 75:
 
                 st.warning(
@@ -400,11 +410,15 @@ if uploaded_file is not None:
             pdf_file = os.path.join(
                 "results",
                 "report.pdf"
-            )            
+            )
+
             create_pdf_report(
                 pdf_file,
                 disease,
-                confidence
+                confidence,
+                patient_name,
+                patient_age,
+                patient_gender
             )
 
             with open(
